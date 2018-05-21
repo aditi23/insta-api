@@ -79,7 +79,7 @@ func GetCountriesInfo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Println(out)
-	c := newsapi.NewClient("5f907a0ace284362aa4ea0b2e9dae1ff", newsapi.WithHTTPClient(http.DefaultClient))
+	c := newsapi.NewClient("apiKey", newsapi.WithHTTPClient(http.DefaultClient))
 	sources, _, err := c.GetSources(context.Background(), &newsapi.SourceParameters{
 		Country: country.Country,
 	})
@@ -96,7 +96,6 @@ func GetCountriesInfo(w http.ResponseWriter, r *http.Request) {
 		value.Long = country.Long
 		result.CountryInfor = append(result.CountryInfor, value)
 	}
-	fmt.Println(sources.Sources)
 	json.NewEncoder(w).Encode(result)
 }
 
@@ -176,13 +175,10 @@ func initDb() {
 
 	db, err = sql.Open("postgres", psqlInfo)
 	if err != nil {
-		fmt.Println("ghjkgjh")
 		panic(err)
 	}
 	err = db.Ping()
 	if err != nil {
-		fmt.Println("abcd")
-
 		panic(err)
 	}
 }
